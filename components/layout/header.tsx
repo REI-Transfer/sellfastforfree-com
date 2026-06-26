@@ -18,8 +18,6 @@ const LOGO_HEIGHT_PX = Number(process.env.LOGO_HEIGHT_PX || 0)
 const isBannerLogo = LOGO_HEIGHT_PX > 0
 
 export function Header({ companyName, phoneDisplay, phoneHref, logoUrl, headerBgColor = "#ffffff", ibuykcStyle = false }: HeaderProps) {
-  const isDark = headerBgColor !== "#ffffff" && headerBgColor !== "white"
-
   return (
     <header className="w-full shadow-sm" style={{ backgroundColor: headerBgColor }}>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
@@ -47,14 +45,9 @@ export function Header({ companyName, phoneDisplay, phoneHref, logoUrl, headerBg
               />
             )
           )}
-          {!isBannerLogo && (
-            <span
-              className="text-base font-bold leading-tight"
-              style={{ color: isDark ? "white" : "var(--accent)" }}
-            >
-              {companyName}
-            </span>
-          )}
+          {/* Company-name text intentionally omitted for SellFastForFree —
+              header shows the logo only (per-client request). The logo's alt
+              text still carries the company name for accessibility/SEO. */}
         </div>
 
         {/* Phone CTA */}
