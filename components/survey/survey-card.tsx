@@ -104,7 +104,8 @@ function isQualifiedForMeta(d: SurveyData): boolean {
   const okType = d.propertyType === 'single-family' || d.propertyType === 'multi-family'
   const okListed = d.listedOnMarket === 'not-listed'
   const okOwner = d.isLegalOwner !== 'no'
-  const okCondition = d.condition !== 'excellent'
+  const conditionException = d.reason === 'foreclosure' || d.reason === 'behind-payments' || d.reason === 'inherited'
+  const okCondition = d.condition !== 'excellent' || conditionException
   return okType && okListed && okOwner && okCondition
 }
 function leadQuality(score: number): 'premium' | 'standard' | 'low' {
@@ -381,6 +382,14 @@ export function SurveyCard({ phoneDisplay = "(800) 000-0000", phoneHref = "80000
       setTimeout(() => { setDisqualifyReason("notOwner"); setIsDisqualified(true) }, 300)
       return
     }
+    // Excellent-condition homes are a hard stop UNLESS the reason is inherited,
+    // foreclosure, or behind on payments. Condition (step 6) is asked before reason
+    // (step 7), so the hard stop fires here when the reason is selected.
+    if (field === "reason" && surveyData.condition === "excellent"
+        && !["foreclosure", "behind-payments", "inherited"].includes(value)) {
+      setTimeout(() => { setDisqualifyReason("condition"); setIsDisqualified(true) }, 300)
+      return
+    }
 
     setTimeout(() => { if (step < totalSteps) setStep(step + 1) }, 300)
   }
@@ -431,6 +440,11 @@ export function SurveyCard({ phoneDisplay = "(800) 000-0000", phoneHref = "80000
         title: "Outside Our Service Area",
         message: "Unfortunately, we don't currently buy properties in that area.",
         detail: "We only serve select markets at this time. If you believe your property is within our coverage area, please try a different address or give us a call.",
+      },
+      condition: {
+        title: "We're Unable to Assist",
+        message: "We focus on homes that need some work or repairs.",
+        detail: "A move-in-ready home usually nets more on the open market with an agent. If that changes down the road, feel free to reach back out to us any time.",
       },
     }
     const msg = disqualifyMessages[disqualifyReason] || disqualifyMessages.notOwner
