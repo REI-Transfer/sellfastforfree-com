@@ -23,10 +23,11 @@ const config = {
 
   // Service areas — JSON array of {id, centerLat, centerLng, radiusMiles}. Must be
   // valid circle objects or "[]". NEVER a state-name array like ["Wisconsin"].
-  // Hardcoded to cover CT + RI + MA (2026-07-25) so all three states pass the geo
-  // gate regardless of the stale SERVICE_AREAS env value. Update this array to change
-  // coverage; the SERVICE_AREAS env var is intentionally no longer read here.
-  serviceAreas:    '[{"id":"hartford-ct","centerLat":41.7658,"centerLng":-72.6734,"radiusMiles":35},{"id":"newhaven-ct","centerLat":41.3083,"centerLng":-72.9279,"radiusMiles":30},{"id":"stamford-ct","centerLat":41.0534,"centerLng":-73.5387,"radiusMiles":22},{"id":"providence-ri","centerLat":41.8240,"centerLng":-71.4128,"radiusMiles":30},{"id":"boston-ma","centerLat":42.3601,"centerLng":-71.0589,"radiusMiles":35},{"id":"worcester-ma","centerLat":42.2626,"centerLng":-71.8023,"radiusMiles":30},{"id":"springfield-ma","centerLat":42.1015,"centerLng":-72.5898,"radiusMiles":35},{"id":"pittsfield-ma","centerLat":42.4501,"centerLng":-73.2454,"radiusMiles":30},{"id":"capecod-ma","centerLat":41.7003,"centerLng":-70.3002,"radiusMiles":40}]',
+  // Hardcoded coverage (updated 2026-07-26): ALL of Connecticut (3 circles: SW
+  // Fairfield, NW Litchfield, East/Hartford) + ALL of Rhode Island incl. Block
+  // Island (1 circle) + MA metros (5 circles). Verified to cover every CT/RI corner
+  // town. Update this array to change coverage; SERVICE_AREAS env is not read here.
+  serviceAreas:    '[{"id":"ct-southwest","centerLat":41.20,"centerLng":-73.20,"radiusMiles":35},{"id":"ct-northwest","centerLat":41.80,"centerLng":-73.10,"radiusMiles":30},{"id":"ct-east","centerLat":41.65,"centerLng":-72.20,"radiusMiles":42},{"id":"ri-all","centerLat":41.70,"centerLng":-71.55,"radiusMiles":40},{"id":"boston-ma","centerLat":42.3601,"centerLng":-71.0589,"radiusMiles":35},{"id":"worcester-ma","centerLat":42.2626,"centerLng":-71.8023,"radiusMiles":30},{"id":"springfield-ma","centerLat":42.1015,"centerLng":-72.5898,"radiusMiles":35},{"id":"pittsfield-ma","centerLat":42.4501,"centerLng":-73.2454,"radiusMiles":30},{"id":"capecod-ma","centerLat":41.7003,"centerLng":-70.3002,"radiusMiles":40}]',
   // Market name for advertorial copy ("Wisconsin"); empty renders "the areas we serve".
   marketName:      process.env.MARKET_NAME       ?? "",
   smsKeyword:      process.env.SMS_KEYWORD       ?? "OFFER",
